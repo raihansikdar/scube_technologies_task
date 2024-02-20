@@ -3,27 +3,42 @@ import 'package:get/get.dart';
 import 'package:scube_technologies_task/common_widgets/circular_inside_buttonWidget.dart';
 import 'package:scube_technologies_task/features/add_project_elements/controller/add_info_controller.dart';
 import 'package:scube_technologies_task/features/project_element/controller/project_element_controller.dart';
+import 'package:scube_technologies_task/features/update_project_elements/controller/update_info_controller.dart';
 import 'package:scube_technologies_task/utils/app_toast.dart';
 import 'package:scube_technologies_task/utils/custom_size_extention.dart';
 
 class AddInfoScreen extends StatelessWidget {
-   AddInfoScreen({Key? key}) : super(key: key);
+  final int? id;
+  final String? projectName;
+  final String? assignedEngineer;
+  final String? assignedTechnician;
+  final String? startDate;
+  final String? endDate;
+  final String? projectUpdate;
 
-  TextEditingController _projectNameTEController = TextEditingController();
-  TextEditingController _assignedEngineerTEController = TextEditingController();
-  TextEditingController _assignedTechnicianTEController = TextEditingController();
-  // TextEditingController _startDateTEController = TextEditingController();
-  // TextEditingController _endDateTEController = TextEditingController();
-  TextEditingController _projectUpdateTEController = TextEditingController();
+  AddInfoScreen({Key? key,  this.id, this.projectName, this.assignedEngineer, this.assignedTechnician, this.startDate, this.endDate, this.projectUpdate}) : super(key: key);
 
   GlobalKey<FormState>_formKey =GlobalKey<FormState>();
+
    String update = Get.arguments ?? '';
+  final UpdateInfoController _updateInfoController = Get.find<UpdateInfoController>();
+
 
    @override
   Widget build(BuildContext context) {
+     if (update == 'update') {
+       _updateInfoController.initControllers(
+         projectName: projectName ?? '',
+         assignedEngineer: assignedEngineer ?? '',
+         assignedTechnician: assignedTechnician ?? '',
+         startDate: startDate ?? '',
+         endDate: endDate ?? '',
+         projectUpdate: projectUpdate ?? '',
+       );
+     }
     return Scaffold(
       appBar: AppBar(
-        title: update == 'update' ? Text('Update Info') : Text('Add Info'),
+        title: update == 'update' ? const Text('Update Info') : const Text('Add Info'),
         backgroundColor: Colors.amber,
       ),
       body: Padding(
@@ -36,8 +51,8 @@ class AddInfoScreen extends StatelessWidget {
                 return Column(
                   children: [
                     TextFormField(
-                      controller: _projectNameTEController,
-                      decoration: InputDecoration(
+                      controller: update == 'update' ? _updateInfoController.updateProjectNameTEController : _addInfoController.projectNameTEController,
+                      decoration: const InputDecoration(
                         labelText: 'Project Name'
                       ),
                       validator: (String? value){
@@ -49,8 +64,8 @@ class AddInfoScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.rSp,),
                     TextFormField(
-                      controller: _assignedEngineerTEController,
-                      decoration: InputDecoration(
+                      controller:update == 'update' ? _updateInfoController.updateAssignedEngineerTEController : _addInfoController.assignedEngineerTEController,
+                      decoration: const InputDecoration(
                           labelText: 'Assigned Engineer'
                       ),
                       validator: (String? value){
@@ -62,8 +77,8 @@ class AddInfoScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.rSp,),
                     TextFormField(
-                      controller: _assignedTechnicianTEController,
-                      decoration: InputDecoration(
+                      controller:update == 'update' ? _updateInfoController.updateAssignedTechnicianTEController : _addInfoController.assignedTechnicianTEController,
+                      decoration: const InputDecoration(
                           labelText: 'Assigned Technician'
                       ),
                       validator: (String? value){
@@ -79,8 +94,8 @@ class AddInfoScreen extends StatelessWidget {
                      children: [
                        Expanded(
                          child: TextFormField(
-                           controller: _addInfoController.startDateTEController,
-                           decoration: InputDecoration(
+                           controller:update == 'update' ? _updateInfoController.updateStartDateTEController : _addInfoController.startDateTEController,
+                           decoration: const InputDecoration(
                                labelText: 'Start Date'
                            ),
                            validator: (String? value){
@@ -89,12 +104,17 @@ class AddInfoScreen extends StatelessWidget {
                              }
                              return null;
                            },
+
                          ),
                        ),
                        SizedBox(width: 10.rSp,),
                        GestureDetector(
                            onTap: (){
-                             _addInfoController.pickStartDate(context);
+                             if(update == 'update'){
+                               _updateInfoController.pickStartDate(context);
+                             }else{
+                               _addInfoController.pickStartDate(context);
+                             }
                            },
                            child: Icon(Icons.calendar_month,size: 40.rSp,)),
                      ],
@@ -104,8 +124,8 @@ class AddInfoScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: _addInfoController.endDateTEController,
-                            decoration: InputDecoration(
+                            controller:update == 'update' ? _updateInfoController.updateEndDateTEController : _addInfoController.endDateTEController,
+                            decoration: const InputDecoration(
                                 labelText: 'End Date'
                             ),
                             validator: (String? value){
@@ -119,19 +139,24 @@ class AddInfoScreen extends StatelessWidget {
                         SizedBox(width: 10.rSp,),
                         GestureDetector(
                             onTap: (){
-                              _addInfoController.pickEndDate(context);
+                              if(update == 'update'){
+                                _updateInfoController.pickEndDate(context);
+                              }else{
+                                _addInfoController.pickEndDate(context);
+                              }
+
                             },
                             child: Icon(Icons.calendar_month,size: 40.rSp,),),
                       ],
                     ),
                     SizedBox(height: 16.rSp,),
                     TextFormField(
-                      controller: _projectUpdateTEController,
+                      controller:update == 'update' ? _updateInfoController.updateProjectUpdateTEController :  _addInfoController.projectUpdateTEController,
                       maxLines: 3,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'Project Update',
                         alignLabelWithHint: true,
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 8,
                         ),
@@ -150,28 +175,52 @@ class AddInfoScreen extends StatelessWidget {
                         if(!_formKey.currentState!.validate()){
                           return;
                         }else{
-                         final response = await  _addInfoController.addInfo(projectName: _projectNameTEController.text.trim(),
-                              assignedEngineer: _assignedEngineerTEController.text.trim(),
-                              assignedTechnician: _assignedTechnicianTEController.text.trim(),
+                         final response = await (update == 'update' ? _updateInfoController.updateInfo(
+                                    id: id ?? 0,
+                                    projectName: _updateInfoController.updateProjectNameTEController.text.trim(),
+                                    assignedEngineer: _updateInfoController.updateAssignedEngineerTEController.text.trim(),
+                                    assignedTechnician: _updateInfoController.updateAssignedEngineerTEController.text.trim(),
+                                    startDate: _updateInfoController.updateStartDateTEController.text.trim(),
+                                    endDate: _updateInfoController.updateEndDateTEController.text.trim(),
+                                    projectUpdate: _updateInfoController.updateProjectUpdateTEController.text.trim(),
+                         )
+                                : _addInfoController.addInfo(projectName: _addInfoController.projectNameTEController.text.trim(),
+                              assignedEngineer: _addInfoController.assignedEngineerTEController.text.trim(),
+                              assignedTechnician: _addInfoController.assignedTechnicianTEController.text.trim(),
                               startDate: _addInfoController.startDateTEController.text.trim(),
                               endDate: _addInfoController.endDateTEController.text.trim(),
-                              projectUpdate: _projectUpdateTEController.text.trim(),
-                          );
+                              projectUpdate: _addInfoController.projectUpdateTEController.text.trim(),
+                         ));
                          if(response){
-                           _projectNameTEController.clear();
-                           _assignedEngineerTEController.clear();
-                           _assignedTechnicianTEController.clear();
-                           _addInfoController.startDateTEController.clear();
-                           _addInfoController.endDateTEController.clear();
-                           _projectUpdateTEController.clear();
-                           AppToast.successToast(_addInfoController.message);
+                           if(update == 'update'){
+                             _updateInfoController.updateProjectNameTEController.clear();
+                             _updateInfoController.updateAssignedEngineerTEController.clear();
+                             _updateInfoController.updateAssignedTechnicianTEController.clear();
+                             _updateInfoController.updateStartDateTEController.clear();
+                             _updateInfoController.updateEndDateTEController.clear();
+                             _updateInfoController.updateProjectUpdateTEController.clear();
+                             
+                             AppToast.successToast(_updateInfoController.message);
+                             
+                           }else{
+                             _addInfoController.projectNameTEController.clear();
+                             _addInfoController.assignedEngineerTEController.clear();
+                             _addInfoController.assignedTechnicianTEController.clear();
+                             _addInfoController.startDateTEController.clear();
+                             _addInfoController.endDateTEController.clear();
+                             _addInfoController.projectUpdateTEController.clear();
+                             
+                             AppToast.successToast(_addInfoController.message);
+                           }
+
+                           
                            Navigator.pop(context);
                            Get.find<ProjectElementController>().fetchProjectData();
                          }else{
-                           AppToast.failedToast(_addInfoController.message);
+                          update == 'update' ? AppToast.failedToast(_updateInfoController.message) :  AppToast.failedToast(_addInfoController.message);
                          }
                         }
-                      }, child: update == 'update'  ? Text('Update') : _addInfoController.isLoading ? CircularInsideButtonWidget() : Text('Submit')),
+                      }, child: update == 'update'  ? const Text('Update') : _addInfoController.isLoading ? const CircularInsideButtonWidget() : const Text('Submit')),
                     )
                   ],
                 );

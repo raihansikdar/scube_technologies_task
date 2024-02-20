@@ -50,6 +50,9 @@ class NetworkCaller{
     try {
       Response response = await put(Uri.parse(url), headers: {'Content-Type': 'application/json'}, body: jsonEncode(body));
 
+      log("putRequest statusCode ==> ${response.statusCode}");
+      log("putRequest body ==> ${response.body}");
+
       if (response.statusCode == 200) {
         return NetworkResponse(isSuccess: true, statusCode: response.statusCode, body: jsonDecode(response.body));
       } else {

@@ -6,11 +6,20 @@ import 'package:scube_technologies_task/services/network_caller.dart';
 import 'package:scube_technologies_task/services/network_response.dart';
 
 class AddInfoController extends GetxController {
+  TextEditingController _projectNameTEController = TextEditingController();
+  TextEditingController _assignedEngineerTEController = TextEditingController();
+  TextEditingController _assignedTechnicianTEController = TextEditingController();
   TextEditingController _startDateTEController = TextEditingController();
   TextEditingController _endDateTEController = TextEditingController();
+  TextEditingController _projectUpdateTEController = TextEditingController();
 
+
+  TextEditingController get projectNameTEController => _projectNameTEController;
+  TextEditingController get assignedEngineerTEController => _assignedEngineerTEController;
+  TextEditingController get assignedTechnicianTEController => _assignedTechnicianTEController;
   TextEditingController get startDateTEController => _startDateTEController;
   TextEditingController get endDateTEController => _endDateTEController;
+  TextEditingController get projectUpdateTEController => _projectUpdateTEController;
 
   void pickDate(TextEditingController controller, BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
@@ -41,6 +50,8 @@ class AddInfoController extends GetxController {
 
   bool get isLoading => _isLoading;
   String get message => _message;
+
+
 
   Future<bool> addInfo({required String projectName,required String assignedEngineer,required String assignedTechnician,required String startDate,required String endDate,required String projectUpdate,})async{
 
