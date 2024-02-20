@@ -6,7 +6,7 @@ import 'package:scube_technologies_task/services/network_response.dart';
 
 class NetworkCaller{
   ///----------------------------------->> get request method <<----------------------------------
-  static Future<NetworkResponse> getRequest(String url,{bool isLogin = false}) async{
+  static Future<NetworkResponse> getRequest(String url) async{
     try{
       Response response = await get(Uri.parse(url),headers: {'Content-Type': 'application/json'});
 
