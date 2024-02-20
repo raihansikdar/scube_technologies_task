@@ -34,7 +34,7 @@ class NetworkCaller{
       log("postRequest statusCode ==> ${response.statusCode}");
       log("postRequest body ==> ${response.body}");
 
-      if(response.statusCode == 200){
+      if(response.statusCode == 201){
         return NetworkResponse(isSuccess: true, statusCode: response.statusCode, body: jsonDecode(response.body));
       }else{
         return NetworkResponse(isSuccess: false, statusCode: response.statusCode, body: null);

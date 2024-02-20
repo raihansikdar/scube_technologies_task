@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scube_technologies_task/common_widgets/circular_inside_buttonWidget.dart';
 import 'package:scube_technologies_task/features/add_project_elements/controller/add_info_controller.dart';
+import 'package:scube_technologies_task/features/project_element/controller/project_element_controller.dart';
+import 'package:scube_technologies_task/utils/app_toast.dart';
 import 'package:scube_technologies_task/utils/custom_size_extention.dart';
 
 class AddInfoScreen extends StatelessWidget {
@@ -9,8 +12,8 @@ class AddInfoScreen extends StatelessWidget {
   TextEditingController _projectNameTEController = TextEditingController();
   TextEditingController _assignedEngineerTEController = TextEditingController();
   TextEditingController _assignedTechnicianTEController = TextEditingController();
-  TextEditingController _startDateTEController = TextEditingController();
-  TextEditingController _endDateTEController = TextEditingController();
+  // TextEditingController _startDateTEController = TextEditingController();
+  // TextEditingController _endDateTEController = TextEditingController();
   TextEditingController _projectUpdateTEController = TextEditingController();
 
   GlobalKey<FormState>_formKey =GlobalKey<FormState>();
@@ -59,19 +62,6 @@ class AddInfoScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.rSp,),
                     TextFormField(
-                      controller: _projectNameTEController,
-                      decoration: InputDecoration(
-                          labelText: 'Assigned Technician'
-                      ),
-                      validator: (String? value){
-                        if(value?.isEmpty ?? true){
-                          return 'This field is mandatory';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 16.rSp,),
-                    TextFormField(
                       controller: _assignedTechnicianTEController,
                       decoration: InputDecoration(
                           labelText: 'Assigned Technician'
@@ -84,6 +74,7 @@ class AddInfoScreen extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 16.rSp,),
+
                    Row(
                      children: [
                        Expanded(
@@ -103,7 +94,7 @@ class AddInfoScreen extends StatelessWidget {
                        SizedBox(width: 10.rSp,),
                        GestureDetector(
                            onTap: (){
-                             _addInfoController.datePicker(context);
+                             _addInfoController.pickStartDate(context);
                            },
                            child: Icon(Icons.calendar_month,size: 40.rSp,)),
                      ],
@@ -128,7 +119,7 @@ class AddInfoScreen extends StatelessWidget {
                         SizedBox(width: 10.rSp,),
                         GestureDetector(
                             onTap: (){
-                              _addInfoController.pickStartDate(context);
+                              _addInfoController.pickEndDate(context);
                             },
                             child: Icon(Icons.calendar_month,size: 40.rSp,),),
                       ],
@@ -153,13 +144,35 @@ class AddInfoScreen extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 16.rSp,),
-                    ElevatedButton(onPressed: (){
-                      if(!_formKey.currentState!.validate()){
-                        return;
-                      }else{
-
-                      }
-                    }, child: update == 'update'  ? Text('Update') : Text('Submit'))
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(onPressed: () async{
+                        if(!_formKey.currentState!.validate()){
+                          return;
+                        }else{
+                         final response = await  _addInfoController.addInfo(projectName: _projectNameTEController.text.trim(),
+                              assignedEngineer: _assignedEngineerTEController.text.trim(),
+                              assignedTechnician: _assignedTechnicianTEController.text.trim(),
+                              startDate: _addInfoController.startDateTEController.text.trim(),
+                              endDate: _addInfoController.endDateTEController.text.trim(),
+                              projectUpdate: _projectUpdateTEController.text.trim(),
+                          );
+                         if(response){
+                           _projectNameTEController.clear();
+                           _assignedEngineerTEController.clear();
+                           _assignedTechnicianTEController.clear();
+                           _addInfoController.startDateTEController.clear();
+                           _addInfoController.endDateTEController.clear();
+                           _projectUpdateTEController.clear();
+                           AppToast.successToast(_addInfoController.message);
+                           Navigator.pop(context);
+                           Get.find<ProjectElementController>().fetchProjectData();
+                         }else{
+                           AppToast.failedToast(_addInfoController.message);
+                         }
+                        }
+                      }, child: update == 'update'  ? Text('Update') : _addInfoController.isLoading ? CircularInsideButtonWidget() : Text('Submit')),
+                    )
                   ],
                 );
               }

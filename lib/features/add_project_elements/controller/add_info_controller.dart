@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:scube_technologies_task/services/app_urls.dart';
+import 'package:scube_technologies_task/services/network_caller.dart';
+import 'package:scube_technologies_task/services/network_response.dart';
 
 class AddInfoController extends GetxController {
   TextEditingController _startDateTEController = TextEditingController();
@@ -32,5 +34,40 @@ class AddInfoController extends GetxController {
 
   void pickEndDate(BuildContext context) {
     pickDate(_endDateTEController, context);
+  }
+
+  bool _isLoading = false;
+  String _message = '';
+
+  bool get isLoading => _isLoading;
+  String get message => _message;
+
+  Future<bool> addInfo({required String projectName,required String assignedEngineer,required String assignedTechnician,required String startDate,required String endDate,required String projectUpdate,})async{
+
+    _isLoading = true;
+    update();
+
+    Map<String,dynamic> body = {
+      "start_date": startDate,
+      "end_date": endDate,
+      "project_name": projectName,
+      "project_update": projectUpdate,
+      "assigned_engineer": assignedEngineer,
+      "assigned_technician": assignedTechnician
+    };
+
+    NetworkResponse response = await NetworkCaller.postRequest(AppUrls.addProjectElementsUrl, body);
+
+    _isLoading = false;
+
+    if(response.isSuccess){
+      _message = 'Information has been added Successfully.';
+      update();
+      return true;
+    }else{
+      _message = 'Information has been added failed.';
+      update();
+      return false;
+    }
   }
 }
