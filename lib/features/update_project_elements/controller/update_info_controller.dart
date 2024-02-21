@@ -89,11 +89,11 @@ class UpdateInfoController extends GetxController {
     _isLoading = false;
 
     if(response.isSuccess){
-      _message = 'Information has been updated Successfully.';
+      _message = 'Successfully Updated.';
       update();
       return true;
     }else{
-      _message = 'Information has been updated failed.';
+      _message = 'Failed to Upload.';
       update();
       return false;
     }

@@ -72,11 +72,11 @@ class AddInfoController extends GetxController {
     _isLoading = false;
 
     if(response.isSuccess){
-      _message = 'Information has been added Successfully.';
+      _message = 'Successfully Added.';
       update();
       return true;
     }else{
-      _message = 'Information has been added failed.';
+      _message = 'Failed to Add.';
       update();
       return false;
     }

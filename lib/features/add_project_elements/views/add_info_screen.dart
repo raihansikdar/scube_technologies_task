@@ -53,7 +53,7 @@ class AddInfoScreen extends StatelessWidget {
                     TextFormField(
                       controller: update == 'update' ? _updateInfoController.updateProjectNameTEController : _addInfoController.projectNameTEController,
                       decoration: const InputDecoration(
-                        labelText: 'Project Name'
+                          hintText: 'Project Name'
                       ),
                       validator: (String? value){
                         if(value?.isEmpty ?? true){
@@ -66,7 +66,7 @@ class AddInfoScreen extends StatelessWidget {
                     TextFormField(
                       controller:update == 'update' ? _updateInfoController.updateAssignedEngineerTEController : _addInfoController.assignedEngineerTEController,
                       decoration: const InputDecoration(
-                          labelText: 'Assigned Engineer'
+                          hintText: 'Assigned Engineer'
                       ),
                       validator: (String? value){
                         if(value?.isEmpty ?? true){
@@ -79,7 +79,7 @@ class AddInfoScreen extends StatelessWidget {
                     TextFormField(
                       controller:update == 'update' ? _updateInfoController.updateAssignedTechnicianTEController : _addInfoController.assignedTechnicianTEController,
                       decoration: const InputDecoration(
-                          labelText: 'Assigned Technician'
+                          hintText: 'Assigned Technician'
                       ),
                       validator: (String? value){
                         if(value?.isEmpty ?? true){
@@ -91,12 +91,14 @@ class AddInfoScreen extends StatelessWidget {
                     SizedBox(height: 16.rSp,),
 
                    Row(
+                     crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
                        Expanded(
                          child: TextFormField(
+                           readOnly: true,
                            controller:update == 'update' ? _updateInfoController.updateStartDateTEController : _addInfoController.startDateTEController,
                            decoration: const InputDecoration(
-                               labelText: 'Start Date'
+                               hintText: 'Press calender icon to pick start date'
                            ),
                            validator: (String? value){
                              if(value?.isEmpty ?? true){
@@ -121,12 +123,14 @@ class AddInfoScreen extends StatelessWidget {
                    ),
                     SizedBox(height: 16.rSp,),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: TextFormField(
+                            readOnly: true,
                             controller:update == 'update' ? _updateInfoController.updateEndDateTEController : _addInfoController.endDateTEController,
                             decoration: const InputDecoration(
-                                labelText: 'End Date'
+                                hintText: 'Press calender icon to pick end date'
                             ),
                             validator: (String? value){
                               if(value?.isEmpty ?? true){
@@ -154,7 +158,7 @@ class AddInfoScreen extends StatelessWidget {
                       controller:update == 'update' ? _updateInfoController.updateProjectUpdateTEController :  _addInfoController.projectUpdateTEController,
                       maxLines: 3,
                       decoration: const InputDecoration(
-                          labelText: 'Project Update',
+                        hintText: 'Project Update',
                         alignLabelWithHint: true,
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 12,
@@ -179,7 +183,7 @@ class AddInfoScreen extends StatelessWidget {
                                     id: id ?? 0,
                                     projectName: _updateInfoController.updateProjectNameTEController.text.trim(),
                                     assignedEngineer: _updateInfoController.updateAssignedEngineerTEController.text.trim(),
-                                    assignedTechnician: _updateInfoController.updateAssignedEngineerTEController.text.trim(),
+                                    assignedTechnician: _updateInfoController.updateAssignedTechnicianTEController.text.trim(),
                                     startDate: _updateInfoController.updateStartDateTEController.text.trim(),
                                     endDate: _updateInfoController.updateEndDateTEController.text.trim(),
                                     projectUpdate: _updateInfoController.updateProjectUpdateTEController.text.trim(),
@@ -220,7 +224,7 @@ class AddInfoScreen extends StatelessWidget {
                           update == 'update' ? AppToast.failedToast(_updateInfoController.message) :  AppToast.failedToast(_addInfoController.message);
                          }
                         }
-                      }, child: update == 'update'  ? const Text('Update') : _addInfoController.isLoading ? const CircularInsideButtonWidget() : const Text('Submit')),
+                      }, child: update == 'update'  ?  (_updateInfoController.isLoading ? const CircularInsideButtonWidget() : const Text('Update')) : (_addInfoController.isLoading ? const CircularInsideButtonWidget() : const Text('Submit'))),
                     )
                   ],
                 );

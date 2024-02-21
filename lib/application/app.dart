@@ -32,8 +32,8 @@ class ScubeTechnologiesTask extends StatelessWidget {
           disabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
           ),
-          labelStyle:TextStyle(
-            color: Colors.grey.shade500,
+          hintStyle:TextStyle(
+            color: Colors.grey.shade400,
           ),
         ),
       ),
