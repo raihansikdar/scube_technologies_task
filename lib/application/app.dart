@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scube_technologies_task/bindings/state_holders_binders.dart';
 import 'package:scube_technologies_task/features/project_element/views/home_screen.dart';
+import 'package:scube_technologies_task/splash_screen.dart';
 import 'package:scube_technologies_task/utils/custom_size_extention.dart';
 
 class ScubeTechnologiesTask extends StatelessWidget {
-  const ScubeTechnologiesTask({super.key});
-
+   ScubeTechnologiesTask({super.key});
+  DateTime? lastPressed;
   @override
   Widget build(BuildContext context) {
 
@@ -37,7 +38,7 @@ class ScubeTechnologiesTask extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
