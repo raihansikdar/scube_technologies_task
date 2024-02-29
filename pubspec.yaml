@@ -36,6 +36,7 @@ dependencies:
   fluttertoast: ^8.2.4
   double_back_to_close: ^2.0.0
   loading_animation_widget: ^1.2.0+4
+  connectivity_plus: ^5.0.2
 
 
 

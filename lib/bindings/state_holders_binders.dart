@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:scube_technologies_task/features/add_project_elements/controller/add_info_controller.dart';
 import 'package:scube_technologies_task/features/project_element/controller/project_element_controller.dart';

@@ -21,6 +21,7 @@ class NetworkCaller{
 
     }catch(e){
       log(e.toString());
+
     }
     return NetworkResponse(isSuccess: false, statusCode: -1, body: null);
   }
@@ -64,3 +65,4 @@ class NetworkCaller{
     return NetworkResponse(isSuccess: false, statusCode: -1, body: null);
   }
 }
+
