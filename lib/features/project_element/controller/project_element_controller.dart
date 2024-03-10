@@ -30,7 +30,6 @@ class ProjectElementController extends GetxController with InternetConnectivityC
   Future<bool> fetchProjectData() async {
     _isLoading = true;
     _isConnected = true;
-    _isError = false;
     update();
 
     try {
@@ -41,11 +40,11 @@ class ProjectElementController extends GetxController with InternetConnectivityC
         log("getRequest statusCode ==> ${response.statusCode}");
         log("getRequest body ==> ${response.body}");
 
-      _isLoading = false;
-
       if (response.isSuccess) {
         List<dynamic> jsonData = response.body;
         _projectElementList = jsonData.map((apiData) => ProjectElementsModel.fromJson(apiData)).toList();
+        _isLoading = false;
+        _isError = false;
         update();
         return true;
       } else {

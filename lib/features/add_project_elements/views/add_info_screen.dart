@@ -6,6 +6,7 @@ import 'package:scube_technologies_task/features/project_element/controller/proj
 import 'package:scube_technologies_task/features/update_project_elements/controller/update_info_controller.dart';
 import 'package:scube_technologies_task/utils/app_toast.dart';
 import 'package:scube_technologies_task/utils/custom_size_extention.dart';
+import 'package:lottie/lottie.dart';
 
 class AddInfoScreen extends StatelessWidget {
   final int? id;
@@ -205,6 +206,11 @@ class AddInfoScreen extends StatelessWidget {
                              _updateInfoController.updateProjectUpdateTEController.clear();
                              
                              AppToast.successToast(_updateInfoController.message);
+                             Container(
+                               width: 200, // Set width as per your requirement
+                               height: 200, // Set height as per your requirement
+                               child: Lottie.asset('assets/animation/success.json'),
+                             );
                              
                            }else{
                              _addInfoController.projectNameTEController.clear();
@@ -217,9 +223,9 @@ class AddInfoScreen extends StatelessWidget {
                              AppToast.successToast(_addInfoController.message);
                            }
 
-                           
-                           Navigator.pop(context);
-                           Get.find<ProjectElementController>().fetchProjectData();
+
+                           //Navigator.pop(context);
+                          // Get.find<ProjectElementController>().fetchProjectData();
                          }else{
                           update == 'update' ? AppToast.failedToast(_updateInfoController.message) :  AppToast.failedToast(_addInfoController.message);
                          }
